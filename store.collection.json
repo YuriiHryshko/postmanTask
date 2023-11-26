@@ -1,70 +1,71 @@
 {
 	"info": {
-		"_postman_id": "67d91bc7-aa8b-4727-aad5-9abcb298ed08",
+		"_postman_id": "5af43eac-c899-4928-ad55-71b7f054b66c",
 		"name": "store",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18317683"
+		"_exporter_id": "5536246"
 	},
 	"item": [
 		{
 			"name": "Products",
 			"item": [
 				{
-					"name": "List products",
+					"name": "Create product",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response time is less than 200ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
-									"});\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.test(\"Content-Type is present\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"});"
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code has status created\", function() {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"price\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"description\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"name\",",
+									"            \"price\",",
+									"            \"sku\",",
+									"            \"description\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"productId\", pm.response.json().id);",
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/products",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get product by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/products/3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"products",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create product",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -90,13 +91,420 @@
 					"response": []
 				},
 				{
+					"name": "List products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function() {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Schema is valid\", function() {\r",
+									"    const schema = {\r",
+									"        \"type\": \"array\",\r",
+									"        \"items\": [\r",
+									"            {\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                    \"id\": {\r",
+									"                        \"type\": \"integer\"\r",
+									"                    },\r",
+									"                    \"name\": {\r",
+									"                        \"type\": \"string\"\r",
+									"                    },\r",
+									"                    \"price\": {\r",
+									"                        \"type\": \"integer\"\r",
+									"                    },\r",
+									"                    \"sku\": {\r",
+									"                        \"type\": \"integer\"\r",
+									"                    },\r",
+									"                    \"description\": {\r",
+									"                        \"type\": \"string\"\r",
+									"                    }\r",
+									"                },\r",
+									"                \"required\": [\r",
+									"                    \"id\",\r",
+									"                    \"name\",\r",
+									"                    \"price\",\r",
+									"                    \"sku\",\r",
+									"                    \"description\"\r",
+									"                ]\r",
+									"            }\r",
+									"        ]\r",
+									"    };\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response shouldn`t be empty\", function(){\r",
+									"    pm.expect(pm.response.json()).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response contains a valid ID\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"productId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"price\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"description\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"name\",",
+									"            \"price\",",
+									"            \"sku\",",
+									"            \"description\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"name\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"price\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"sku\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"description\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"name\",",
+									"                    \"price\",",
+									"                    \"sku\",",
+									"                    \"description\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response items equal specified page size\", function(){",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).eql(Number(pm.request.url.query.get(\"pageSize\")));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products?page=1&pageSize=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sort list of products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response items are sorted by 'id' in ascending order\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    const isSortedAscending = (arr, key) => {",
+									"        return arr.slice(1).every((item, i) => item[key] >= arr[i][key]);",
+									"    };",
+									"    pm.expect(isSortedAscending(jsonData, 'id')).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"name\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"price\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"sku\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"description\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"name\",",
+									"                    \"price\",",
+									"                    \"sku\",",
+									"                    \"description\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products?sortOrder=ASC&sortKey=id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "sortOrder",
+									"value": "ASC"
+								},
+								{
+									"key": "sortKey",
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Product is changed with correct values\", () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(Number(pm.collectionVariables.get(\"productId\"))); ",
+									"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"productName\"));",
+									"    pm.expect(jsonData.price).to.eql(Number(pm.collectionVariables.get(\"productPrice\")));",
+									"    pm.expect(jsonData.description).to.eql(pm.collectionVariables.get(\"productDescription\"));",
+									"    pm.expect(jsonData.sku).to.eql(Number(pm.collectionVariables.get(\"productSku\")));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"price\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            },",
+									"            \"description\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"name\",",
+									"            \"price\",",
+									"            \"sku\",",
+									"            \"description\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"banana\",\r\n    \"price\": 155,\r\n    \"sku\": 123321123,\r\n    \"description\": \"changed description\"\r\n}",
+							"raw": "{\r\n    \"id\": {{productId}},\r\n    \"name\": \"{{productName}}\",\r\n    \"price\": {{productPrice}},\r\n    \"sku\": {{productSku}},\r\n    \"description\": \"{{productDescription}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -117,17 +525,79 @@
 				},
 				{
 					"name": "Remove product by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body is not empty and display correct id\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.not.be.empty;",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"productId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/products/4",
+							"raw": "{{baseUrl}}/products/{{productId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"products",
-								"4"
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product by non-existing ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response body is empty\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
 							]
 						}
 					},
@@ -139,42 +609,54 @@
 			"name": "Orders",
 			"item": [
 				{
-					"name": "List orders",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"orders"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get order by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/orders/3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"orders",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code has status created\", function() {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            },            ",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"id\",",
+									"            \"name\",",
+									"            \"sku\"",
+									"        ]",
+									"    }",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"orderId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -200,13 +682,369 @@
 					"response": []
 				},
 				{
+					"name": "List orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"name\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"sku\": {",
+									"                        \"type\": \"integer\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"name\",",
+									"                    \"sku\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response shouldn`t be empty\", function(){",
+									"    pm.expect(pm.response.json()).to.not.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response contains a valid ID\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"orderId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            },            ",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"id\",",
+									"            \"name\",",
+									"            \"sku\"",
+									"        ]",
+									"    }",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"name\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"sku\": {",
+									"                        \"type\": \"integer\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"name\",",
+									"                    \"sku\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response items equal specified page size\", function(){",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).eql(Number(pm.request.url.query.get(\"pageSize\")));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders?page=1&pageSize=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sort list of orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response items are sorted by 'id' in ascending order\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    const isSortedAscending = (arr, key) => {",
+									"        return arr.slice(1).every((item, i) => item[key] >= arr[i][key]);",
+									"    };",
+									"    pm.expect(isSortedAscending(jsonData, 'id')).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"name\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"sku\": {",
+									"                        \"type\": \"integer\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"name\",",
+									"                    \"sku\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders?sortOrder=ASC&sortKey=id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "sortOrder",
+									"value": "ASC"
+								},
+								{
+									"key": "sortKey",
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Order is changed with correct values\", () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(Number(pm.collectionVariables.get(\"orderId\"))); ",
+									"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"orderName\"));",
+									"    pm.expect(jsonData.sku).to.eql(Number(pm.collectionVariables.get(\"orderSku\")));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            },            ",
+									"            \"name\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"sku\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"id\",",
+									"            \"name\",",
+									"            \"sku\"",
+									"        ]",
+									"    }",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"order5\",\r\n    \"sku\": 123425445656765\r\n}",
+							"raw": "{\r\n    \"id\": {{orderId}},\r\n    \"name\": \"{{orderName}}\",\r\n    \"sku\": {{orderSku}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,17 +1065,79 @@
 				},
 				{
 					"name": "Remove order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body is not empty and display correct id\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.not.be.empty;",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"orderId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/4",
+							"raw": "{{baseUrl}}/orders/{{orderId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"4"
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove order by non-existing ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response body is empty\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"{{orderId}}"
 							]
 						}
 					},
@@ -249,42 +1149,78 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "List users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get user by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/users/3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code has status created\", function() {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"firstName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"lastName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"email\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"dateOfBirth\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"emailVerified\": {",
+									"                \"type\": \"boolean\"",
+									"            },",
+									"            \"signUpDate\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"status\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"level\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"firstName\",",
+									"            \"lastName\",",
+									"            \"email\",",
+									"            \"dateOfBirth\",",
+									"            \"emailVerified\",",
+									"            \"signUpDate\",",
+									"            \"status\",",
+									"            \"level\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"userId\", pm.response.json().id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -310,13 +1246,494 @@
 					"response": []
 				},
 				{
+					"name": "List users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"firstName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"lastName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"email\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"dateOfBirth\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"emailVerified\": {",
+									"                        \"type\": \"boolean\"",
+									"                    },",
+									"                    \"signUpDate\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"status\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"level\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"firstName\",",
+									"                    \"lastName\",",
+									"                    \"email\",",
+									"                    \"dateOfBirth\",",
+									"                    \"emailVerified\",",
+									"                    \"signUpDate\",",
+									"                    \"status\",",
+									"                    \"level\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response shouldn`t be empty\", function(){",
+									"    pm.expect(pm.response.json()).to.not.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response contains a valid ID\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"userId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"firstName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"lastName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"email\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"dateOfBirth\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"emailVerified\": {",
+									"                \"type\": \"boolean\"",
+									"            },",
+									"            \"signUpDate\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"status\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"level\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"firstName\",",
+									"            \"lastName\",",
+									"            \"email\",",
+									"            \"dateOfBirth\",",
+									"            \"emailVerified\",",
+									"            \"signUpDate\",",
+									"            \"status\",",
+									"            \"level\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"firstName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"lastName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"email\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"dateOfBirth\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"emailVerified\": {",
+									"                        \"type\": \"boolean\"",
+									"                    },",
+									"                    \"signUpDate\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"status\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"level\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"firstName\",",
+									"                    \"lastName\",",
+									"                    \"email\",",
+									"                    \"dateOfBirth\",",
+									"                    \"emailVerified\",",
+									"                    \"signUpDate\",",
+									"                    \"status\",",
+									"                    \"level\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response items equal specified page size\", function(){",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).eql(Number(pm.request.url.query.get(\"pageSize\")));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users?page=1&pageSize=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sort list of users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response users are sorted by 'id' in ascending order\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    const isSortedAscending = (arr, key) => {",
+									"        return arr.slice(1).every((item, i) => item[key] >= arr[i][key]);",
+									"    };",
+									"    pm.expect(isSortedAscending(jsonData, 'id')).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"id\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"firstName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"lastName\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"email\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"dateOfBirth\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"emailVerified\": {",
+									"                        \"type\": \"boolean\"",
+									"                    },",
+									"                    \"signUpDate\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"status\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"level\": {",
+									"                        \"type\": \"string\"",
+									"                    }",
+									"                },",
+									"                \"required\": [",
+									"                    \"id\",",
+									"                    \"firstName\",",
+									"                    \"lastName\",",
+									"                    \"email\",",
+									"                    \"dateOfBirth\",",
+									"                    \"emailVerified\",",
+									"                    \"signUpDate\",",
+									"                    \"status\",",
+									"                    \"level\"",
+									"                ]",
+									"            }",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users?sortOrder=ASC&sortKey=id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "sortOrder",
+									"value": "ASC"
+								},
+								{
+									"key": "sortKey",
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function() {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Product is changed with correct values\", () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(Number(pm.collectionVariables.get(\"userId\"))); ",
+									"    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"userFirstName\"));",
+									"    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"userLastName\"));",
+									"    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"userEmail\"));",
+									"    pm.expect(jsonData.dateOfBirth).to.eql(pm.collectionVariables.get(\"userDateOfBirth\"));",
+									"    pm.expect(jsonData.emailVerified).to.eql(Boolean(pm.collectionVariables.get(\"userEmailVerified\")));",
+									"    pm.expect(jsonData.signUpDate).to.eql(pm.collectionVariables.get(\"userSignUpDate\"));",
+									"    pm.expect(jsonData.status).to.eql(pm.collectionVariables.get(\"userStatus\"));",
+									"    pm.expect(jsonData.level).to.eql(pm.collectionVariables.get(\"userLevel\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"    const schema = {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"firstName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"lastName\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"email\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"dateOfBirth\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"emailVerified\": {",
+									"                \"type\": \"boolean\"",
+									"            },",
+									"            \"signUpDate\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"status\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"level\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"                \"type\": \"integer\"",
+									"            }",
+									"        },",
+									"        \"required\": [",
+									"            \"firstName\",",
+									"            \"lastName\",",
+									"            \"email\",",
+									"            \"dateOfBirth\",",
+									"            \"emailVerified\",",
+									"            \"signUpDate\",",
+									"            \"status\",",
+									"            \"level\",",
+									"            \"id\"",
+									"        ]",
+									"    };",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Ilon\",\r\n    \"lastName\": \"Mask\",\r\n    \"email\": \"ilon.mask@gmail.com\",\r\n    \"dateOfBirth\": \"2001-10-99\",\r\n    \"emailVerified\": true,\r\n    \"signUpDate\": \"2019-08-24\",\r\n    \"status\": \"active\",\r\n    \"level\": \"lord\",\r\n    \"id\": 10\r\n}",
+							"raw": "{\r\n    \"firstName\": \"{{userFirstName}}\",\r\n    \"lastName\": \"{{userLastName}}\",\r\n    \"email\": \"{{userEmail}}\",\r\n    \"dateOfBirth\": \"{{userDateOfBirth}}\",\r\n    \"emailVerified\": {{userEmailVerified}},\r\n    \"signUpDate\": \"{{userSignUpDate}}\",\r\n    \"status\": \"{{userStatus}}\",\r\n    \"level\": \"{{userLevel}}\",\r\n    \"id\": {{userId}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -337,17 +1754,79 @@
 				},
 				{
 					"name": "Remove user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body is not empty and display correct id\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.not.be.empty;",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"userId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/10",
+							"raw": "{{baseUrl}}/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"10"
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user by non-existing ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response body is empty\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
 							]
 						}
 					},
@@ -380,6 +1859,91 @@
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productName",
+			"value": "banana",
+			"type": "string"
+		},
+		{
+			"key": "productPrice",
+			"value": "155",
+			"type": "string"
+		},
+		{
+			"key": "productSku",
+			"value": "123321123",
+			"type": "string"
+		},
+		{
+			"key": "productDescription",
+			"value": "changed description",
+			"type": "string"
+		},
+		{
+			"key": "orderId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderName",
+			"value": "order5",
+			"type": "string"
+		},
+		{
+			"key": "orderSku",
+			"value": "123425445656765",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userFirstName",
+			"value": "Ilon",
+			"type": "string"
+		},
+		{
+			"key": "userLastName",
+			"value": "Mask",
+			"type": "string"
+		},
+		{
+			"key": "userEmail",
+			"value": "ilon.mask@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "userDateOfBirth",
+			"value": "2001-10-99",
+			"type": "string"
+		},
+		{
+			"key": "userEmailVerified",
+			"value": "true",
+			"type": "string"
+		},
+		{
+			"key": "userSignUpDate",
+			"value": "2019-08-24",
+			"type": "string"
+		},
+		{
+			"key": "userStatus",
+			"value": "active",
+			"type": "string"
+		},
+		{
+			"key": "userLevel",
+			"value": "lord",
 			"type": "string"
 		}
 	]
